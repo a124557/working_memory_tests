@@ -6,7 +6,7 @@
     <script src="jspsych-6.0.4/plugins/jspsych-symmetry-judgement-task.js"></script>
     <script src="jspsych-6.0.4/plugins/jspsych-survey-text.js"></script>
     <script src="jspsych-6.0.4/plugins/jspsych-instructions.js"></script>
-    <script src="jspsych-6.0.4/plugins/jspsych-fullscreen.js"></script>
+    <!-- <script src="jspsych-6.0.4/plugins/jspsych-fullscreen.js"></script> -->
     <script src="jspsych-6.0.4/plugins/jspsych-spatial-span.js"></script>
     <script src="jspsych-6.0.4/plugins/jspsych-spatial-span-recall.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
@@ -39,6 +39,16 @@
                 // If this test is on a server, and you wish to save the data file to that server, change this to false.
                 // If changed to false, ensure that the php file (its in the directory!) and the empty "data" folder has also been appropriately uploaded to the server.
                 // Incase of problems, feel free to contact me :)
+
+  //----------------------------------------------------------------------
+
+  //-----RETRIEVE URL PARAMETERS------------------------------------------
+  //Using the URLSearchParams to retrieve the user id from the url parameter
+  var urlParameter = window.location.search;
+  var urlParams = new URLSearchParams(urlParameter);
+  var userID = urlParams.get('id');
+  console.log("User ID: "+ userID);
+
 
   //----------------------------------------------------------------------
 
@@ -242,7 +252,7 @@ var feedback = {
   var conclusion = {
     type: 'html-keyboard-response',
     stimulus: function(){
-      return '<div style="font-size:20px;">This task is over.<br><br>Thank you for your participation in this task. <br><br>Please tell the Research Assistant that you have completed the task..</div>'
+      return '<div style="font-size:20px;">This task is over.<br><br>Thank you for your participation in this task. <br><br>You will now be redirected to the next task.</div>'
   },
     choices: jsPsych.NO_KEYS
   }
@@ -274,7 +284,10 @@ var feedback = {
    on_finish: function(data) {
         var data = jsPsych.data.get().filter([{trial_type:'spatial-span-recall'}, {trial_type:'symmetry-judgement-task'}]);
         if (file_name == null){
-          file_name = "WM_symmetry_span_"+partN+"_"+IDsub.toString()+".csv"}
+          //file_name = "WM_symmetry_span_"+partN+"_"+IDsub.toString()+".csv"
+          const testName = "test"
+          file_name = "Symmetry_Span_"+"UserID_"+userID+".csv"
+        }
         else{
           file_name += ".csv"
         }
@@ -293,7 +306,7 @@ var feedback = {
 
   var test_procedure = {
     timeline: [test_stack, recall, feedback],
-    repetitions: nTrials
+    repetitions: 1
   }
 
   var squaresDemoStack = {
@@ -316,16 +329,24 @@ var feedback = {
     repetitions: nfullDemo
   }
 
-  timeline = [p_details]
-  timeline.push({
+  //timeline = [p_details]
+  timeline = []
+
+  //Enabling fullscreen mode
+  /*timeline.push({
     type: 'fullscreen',
     fullscreen_mode: true
-  });
-timeline = timeline.concat([instructions, squaresDemo, instructions2, symmetryDemo, instructions3, fullDemo, instructions4, test_procedure])
-timeline.push({
+  });*/
+//timeline = timeline.concat([instructions, squaresDemo, instructions2, symmetryDemo, instructions3, fullDemo, instructions4, test_procedure])
+
+//Test timeline
+timeline = timeline.concat([instructions4, test_procedure])
+
+//Disables fullscreen mode
+/*timeline.push({
   type: 'fullscreen',
   fullscreen_mode: false
-});
+});*/
 timeline.push(dataLog)
 timeline.push(conclusion)
 
