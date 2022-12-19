@@ -1,4 +1,13 @@
 # Working Memory Tests
+
+Note: This is a fork of the original experiement tasks
+
+The following changes have been added to 'symmetry_span_task.html':
+
+1. Ability to add a url parameter 'id' that is then extracted using the URLSearchParams API 
+2. The output file is saved onto the local machine with the title "Symmetry_Span_"+"UserID_"+userID+".csv"
+3. Demo trials have been removed and test trial repititions reduced to 1. This may change as potential use cases for this experiment changes
+
 Working memory experiment tasks designed on JavaScript
 
 
