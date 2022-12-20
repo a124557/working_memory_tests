@@ -352,7 +352,7 @@ var feedback = {
 //timeline = timeline.concat([instructions, squaresDemo, instructions2, symmetryDemo, instructions3, fullDemo, instructions4, test_procedure])
 
 
-//Check what device the user is using. If mobile device, disable the experiement
+//Check what device the user is using with the String.prototype.startsWith() method. If mobile device, disable the experiement
 const system = String(platform.os.family)
 if(system.startsWith("OS X") || system.startsWith("Windows")){
   //Test timeline
