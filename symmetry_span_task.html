@@ -6,11 +6,15 @@
     <script src="jspsych-6.0.4/plugins/jspsych-symmetry-judgement-task.js"></script>
     <script src="jspsych-6.0.4/plugins/jspsych-survey-text.js"></script>
     <script src="jspsych-6.0.4/plugins/jspsych-instructions.js"></script>
-    <!-- <script src="jspsych-6.0.4/plugins/jspsych-fullscreen.js"></script> -->
+    <!-- 
+      Disable fullscreen mode
+      <script src="jspsych-6.0.4/plugins/jspsych-fullscreen.js"></script> -->
     <script src="jspsych-6.0.4/plugins/jspsych-spatial-span.js"></script>
     <script src="jspsych-6.0.4/plugins/jspsych-spatial-span-recall.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!--Add platform.js CDN link-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/platform/1.3.6/platform.min.js" integrity="sha512-eYPrm8TgYWg3aa6tvSRZjN4v0Z9Qx69q3RhfSj+Mf89QqwOMqmwSlsVqfp4N8NVAcZe/YeUhh9x/nM2CAOp6cA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link href="jspsych-6.0.4/css/jspsych_grid.css" rel="stylesheet" type="text/css"></link>
   </head>
   <body></body>
@@ -51,7 +55,7 @@
 
 
   //----------------------------------------------------------------------
-
+  console.log(platform.os.family+"_"+platform.os.version)
   var setSizes = []    // different set sizes
   for (var i = minSetSize; i<= maxSetSize; i++){
     for (var r = 1; r<= repSet; r++){
@@ -257,6 +261,14 @@ var feedback = {
     choices: jsPsych.NO_KEYS
   }
 
+  var notSupported = {
+    type: 'html-keyboard-response',
+    stimulus: function(){
+      return '<div style="font-size:20px;">This experiement is not designed to run on mobile devices. Please use a desktop browser.</div>'
+  },
+    choices: jsPsych.NO_KEYS
+  }
+
   var p_details = {
     type:"survey-text",
     questions: [{prompt: "Enter subject number"}],
@@ -286,7 +298,7 @@ var feedback = {
         if (file_name == null){
           //file_name = "WM_symmetry_span_"+partN+"_"+IDsub.toString()+".csv"
           const testName = "test"
-          file_name = "Symmetry_Span_"+"UserID_"+userID+".csv"
+          file_name = "Symmetry_Span_"+"UserID_"+userID+"_"+platform.os.family+"_"+platform.os.version+".csv"
         }
         else{
           file_name += ".csv"
@@ -339,16 +351,20 @@ var feedback = {
   });*/
 //timeline = timeline.concat([instructions, squaresDemo, instructions2, symmetryDemo, instructions3, fullDemo, instructions4, test_procedure])
 
-//Test timeline
-timeline = timeline.concat([instructions4, test_procedure])
 
-//Disables fullscreen mode
-/*timeline.push({
+//Check what device the user is using. If mobile device, disable the experiement
+const system = String(platform.os.family)
+if(system.startsWith("OS X") || system.startsWith("Windows")){
+  //Test timeline
+  timeline = timeline.concat([instructions4, test_procedure])
+
+  //Disables fullscreen mode
+  /*timeline.push({
   type: 'fullscreen',
   fullscreen_mode: false
-});*/
-timeline.push(dataLog)
-timeline.push(conclusion)
+  });*/
+  timeline.push(dataLog)
+  timeline.push(conclusion)
 
 jsPsych.init({
   timeline: timeline,
@@ -356,5 +372,20 @@ jsPsych.init({
     jsPsych.data.displayData(); // comment out if you do not want to display results at the end of task
   }
 });
+
+}
+else{
+  timeline.push(notSupported)
+  console.log("Not supported")
+
+  jsPsych.init({
+  timeline: timeline,
+  on_finish: function() {
+    //jsPsych.data.displayData(); // comment out if you do not want to display results at the end of task
+  }
+});
+}
+
+
 </script>
 </html>
