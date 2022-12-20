@@ -354,7 +354,7 @@ var feedback = {
 
 //Check what device the user is using with the String.prototype.startsWith() method. If mobile device, disable the experiement
 const system = String(platform.os.family)
-if(system.startsWith("OS X") || system.startsWith("Windows")){
+if(system.startsWith("OS X") || system.startsWith("Windows") || system.startsWith("Linux")){
   //Test timeline
   timeline = timeline.concat([instructions4, test_procedure])
 
