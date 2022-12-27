@@ -47,6 +47,7 @@ jsPsych.plugins["spatial-span-recall"] = (function() {
 var grid = trial.grid_size;
 var recalledGrid = [];
 var correctGrid = trial.correct_order
+var correctIndex = [];
 var nRecalled = 0
 var nothing = " "
 var acc = 0
@@ -139,6 +140,7 @@ var start_time = Date.now();
           var acc = 0
           for (var i=0; i<correctGrid.length; i++){
             var id = indexOfArray(correctGrid[i], matrix)
+            correctIndex.push(id)
             if (recalledGrid[i] == id){
               acc += 1
             }
@@ -203,6 +205,7 @@ function end_trial() {
   var trial_data = {
     rt: response.rt,
     recall: recalledGrid,
+    correct_answer: correctIndex,
     stimuli: correctGrid,
     accuracy: response.button}
 

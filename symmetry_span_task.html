@@ -55,7 +55,10 @@
 
 
   //----------------------------------------------------------------------
+
+  //Log the type of device user is using to the console for reference
   console.log(platform.os.family+"_"+platform.os.version)
+
   var setSizes = []    // different set sizes
   for (var i = minSetSize; i<= maxSetSize; i++){
     for (var r = 1; r<= repSet; r++){
@@ -298,7 +301,7 @@ var feedback = {
         if (file_name == null){
           //file_name = "WM_symmetry_span_"+partN+"_"+IDsub.toString()+".csv"
           const testName = "test"
-          file_name = "Symmetry_Span_"+"UserID_"+userID+"_"+platform.os.family+"_"+platform.os.version+".csv"
+          file_name = "Symmetry_Span.csv"
         }
         else{
           file_name += ".csv"
@@ -351,10 +354,6 @@ var feedback = {
   });*/
 //timeline = timeline.concat([instructions, squaresDemo, instructions2, symmetryDemo, instructions3, fullDemo, instructions4, test_procedure])
 
-
-//Check what device the user is using with the String.prototype.startsWith() method. If mobile device, disable the experiement
-const system = String(platform.os.family)
-if(system.startsWith("OS X") || system.startsWith("Windows") || system.startsWith("Linux")){
   //Test timeline
   timeline = timeline.concat([instructions4, test_procedure])
 
@@ -373,18 +372,6 @@ jsPsych.init({
   }
 });
 
-}
-else{
-  timeline.push(notSupported)
-  console.log("Not supported")
-
-  jsPsych.init({
-  timeline: timeline,
-  on_finish: function() {
-    //jsPsych.data.displayData(); // comment out if you do not want to display results at the end of task
-  }
-});
-}
 
 
 </script>
