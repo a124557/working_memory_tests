@@ -222,6 +222,7 @@ window.jsPsych = (function() {
 
     // write the data from the trial
     data = typeof data == 'undefined' ? {} : data;
+
     jsPsych.data.write(data);
 
     // get back the data with all of the defaults in
@@ -1318,23 +1319,45 @@ jsPsych.data = (function() {
     return interactionData;
   }
 
+    //-----RETRIEVE URL PARAMETERS------------------------------------------
+  //Using the URLSearchParams API to retrieve the user id from the url parameter
+  var urlParameter = window.location.search;
+  var urlParams = new URLSearchParams(urlParameter);
+  var userID = urlParams.get('id');
+  console.log("User ID: "+ userID);
+
+
+  //----------------------------------------------------------------------
+
   module.write = function(data_object) {
 
     var progress = jsPsych.progress();
     var trial = jsPsych.currentTrial();
-
     //var trial_opt_data = typeof trial.data == 'function' ? trial.data() : trial.data;
 
-    var default_data = {
-      'trial_type': trial.type,
-      'trial_index': progress.current_trial_global,
-      'time_elapsed': jsPsych.totalTime(),
-      'internal_node_id': jsPsych.currentTimelineNodeID()
-    };
+    //console.log("Trial type: " + trial.type)
+    //console.log("User ID is: " + userID + "\n")
+
+      var default_data = {
+        'userID': userID,
+        'trial_type': trial.type,
+        'trial_index': progress.current_trial_global,
+        'time_elapsed': jsPsych.totalTime(),
+        'internal_node_id': jsPsych.currentTimelineNodeID()
+      };
+
+
+
+
 
     var ext_data_object = Object.assign({}, data_object, trial.data, default_data, dataProperties);
 
     allData.push(ext_data_object);
+
+    if(trial.type == 'symmetry-judgement-task' || trial.type == 'spatial-span-recall'){
+      userID = ""
+    }
+
   };
 
   module.addProperties = function(properties) {

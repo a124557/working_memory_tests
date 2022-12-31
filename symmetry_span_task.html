@@ -46,16 +46,6 @@
 
   //----------------------------------------------------------------------
 
-  //-----RETRIEVE URL PARAMETERS------------------------------------------
-  //Using the URLSearchParams API to retrieve the user id from the url parameter
-  var urlParameter = window.location.search;
-  var urlParams = new URLSearchParams(urlParameter);
-  var userID = urlParams.get('id');
-  console.log("User ID: "+ userID);
-
-
-  //----------------------------------------------------------------------
-
   //Log the type of device user is using to the console for reference
   console.log(platform.os.family+"_"+platform.os.version)
 
@@ -341,7 +331,7 @@ var feedback = {
 
   var fullDemo = {
     timeline: [test_stack, recall, feedback],
-    repetitions: nfullDemo
+    repetitions: 1
   }
 
   //timeline = [p_details]
